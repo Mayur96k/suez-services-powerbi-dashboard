@@ -7,7 +7,10 @@
 ![Power BI](https://img.shields.io/badge/Power%20BI-Dashboard-F2C811?logo=powerbi&logoColor=black)
 ![Folium](https://img.shields.io/badge/Folium-Interactive%20map-77B829)
 
-![Power BI dashboard](https://github.com/Mayur96k/Suez_Services_Power_BI_Dashboard/assets/114133429/6293f2f4-9cb0-4369-8f94-36445cc54d16)
+![Service network overview](docs/images/dashboard_overview.png)
+
+> [!IMPORTANT]
+> **Data disclaimer:** all data used in this project is **publicly available**. It was collected from the public service-location map on the SUEZ Australia & New Zealand website. No confidential, internal or personal data is used. This is a personal portfolio project and not an official SUEZ product.
 
 ---
 
@@ -28,10 +31,16 @@ This project collects **every SUEZ service location** published on the company's
 - **Waste is the core network:** 46 sites, **56 %** of all locations, including 21 resource-recovery and recycling facilities, transfer stations and landfills.
 - **Water** is the second activity with **17 sites (21 %)**, and the only service present in **New Zealand** (2 sites).
 - **12 Service Centres (15 %)** support field operations across the major metropolitan areas.
-- **97.6 % of sites are in Australia** (80 of 82), concentrated on the east coast around **Sydney, Brisbane and Melbourne**, with secondary clusters around **Perth** and **Adelaide**.
+- **97.6 % of sites are in Australia** (80 of 82). The largest clusters are **Sydney (16 sites)** and **Perth (14)**, followed by **Adelaide** and **Melbourne** (8 each). South-east Queensland (Brisbane, Gold Coast, Sunshine Coast) adds 7 more.
 - **Regional sites** in Queensland (Cairns, Mackay area, Emerald) and Western Australia (Kalgoorlie) are mainly **waste and resource-recovery** facilities with their supporting service centres.
 
 ![Site locations](docs/images/site_locations.png)
+
+## 🖥️ Power BI dashboard
+
+The report combines a **map of every site**, **KPI cards**, a **service-type breakdown** and an **area view**, with slicers for country, service type and area and full cross-filtering. Rebuild steps are in [05_Dashboard/README.md](05_Dashboard/README.md).
+
+![Power BI report](https://github.com/Mayur96k/Suez_Services_Power_BI_Dashboard/assets/114133429/6293f2f4-9cb0-4369-8f94-36445cc54d16)
 
 ## 🏗️ Architecture
 
@@ -102,7 +111,7 @@ suez-services-powerbi-dashboard/
 │   └── outputs/summary.csv       # sites by type and country
 ├── 05_Dashboard/
 │   └── README.md                 # Power BI report: contents and rebuild steps
-├── docs/images/                  # charts used in this README
+├── docs/images/                  # dashboard overview and charts used in this README
 └── requirements.txt
 ```
 
@@ -112,7 +121,7 @@ suez-services-powerbi-dashboard/
 
 ## ⚠️ Notes & limitations
 
-- Data comes from SUEZ's **public** website location map. It is a **point-in-time snapshot** (19 Aug 2023) and the site list may have changed since.
+- All data comes from SUEZ's **public** website location map; no internal or personal data is used. It is a **point-in-time snapshot** (19 Aug 2023) and the site list may have changed since.
 - The website endpoint is undocumented and may change; the scraper fails clearly (HTTP error) if it does.
 - `country` is derived from coordinate ranges; a state/region column would need reverse geocoding (see roadmap).
 - This is a personal portfolio project and not an official SUEZ product.

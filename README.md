@@ -1,113 +1,136 @@
-# Suez_Services_Dashboard (Australia & New Zealand)
+# 🌏 SUEZ Services Dashboard: Australia & New Zealand
 
-## Overview
+**End-to-end data project: web scraping → ETL → exploratory analysis → Power BI dashboard of SUEZ's 82 service locations across Australia and New Zealand.**
 
-Suez help businesses, governments and communities across Australia and New Zealand to protect, access and optimise the use of natural resources and create new resources through reuse and recycling of water and waste.
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![pandas](https://img.shields.io/badge/pandas-ETL-150458?logo=pandas&logoColor=white)
+![Power BI](https://img.shields.io/badge/Power%20BI-Dashboard-F2C811?logo=powerbi&logoColor=black)
+![Folium](https://img.shields.io/badge/Folium-Interactive%20map-77B829)
 
-This project focuses on scraping all the service locations across Australia & New Zealand and their associated attributes from Suez, performing exploratory data analysis to generate insights and visualize them with the help of Power BI.
+![Power BI dashboard](https://github.com/Mayur96k/Suez_Services_Power_BI_Dashboard/assets/114133429/6293f2f4-9cb0-4369-8f94-36445cc54d16)
 
-The repository directory structure is as follows:
+---
 
-Analyzing-Suez-Services
+## 📌 Overview
 
- 01_WEBSCRAPING
- 
- 02_ETL
- 
- 03_DATA
- 
- 04_ANALYSIS
- 
- 05_DASHBOARD
- 
- 06_RESOURCES
+SUEZ helps businesses, governments and communities in Australia and New Zealand protect, access and optimise natural resources, and create new resources by reusing and recycling water and waste.
 
-The type of content present in the directories is as follows:
+This project collects **every SUEZ service location** published on the company's public location map, cleans and enriches the data, analyses it with Python, and presents it in an **interactive Power BI dashboard** with a map, slicers and cross-filtering.
 
-### 01_WEBSCRAPING
+**Skills demonstrated:** API-based web scraping · data cleaning & validation · geospatial enrichment · exploratory data analysis · data visualisation · Power BI report design.
 
-This directory contains the python script to scrape data from the website along with flat file that has the scraped data.
+## 🔎 Key insights
 
-### 02_ETL
+*Snapshot of 19 August 2023: 82 sites, 7 service types.*
 
-This directory contains the ETL script that takes the scraped dataset as input, transforms it and exports an analysis-ready dataset into the 03_DATA directory.
+![Sites by service type](docs/images/service_types.png)
 
-### 03_DATA
+- **Waste is the core network:** 46 sites, **56 %** of all locations, including 21 resource-recovery and recycling facilities, transfer stations and landfills.
+- **Water** is the second activity with **17 sites (21 %)**, and the only service present in **New Zealand** (2 sites).
+- **12 Service Centres (15 %)** support field operations across the major metropolitan areas.
+- **97.6 % of sites are in Australia** (80 of 82), concentrated on the east coast around **Sydney, Brisbane and Melbourne**, with secondary clusters around **Perth** and **Adelaide**.
+- **Regional sites** in Queensland (Cairns, Mackay area, Emerald) and Western Australia (Kalgoorlie) are mainly **waste and resource-recovery** facilities with their supporting service centres.
 
-This directory contains the data that can be directly used for exploratory data analysis and data visualization purposes.
+![Site locations](docs/images/site_locations.png)
 
-### 04_ANALYSIS
+## 🏗️ Architecture
 
-This directory contains the python notebooks that analyzes the clean dataset to generate insights
+```mermaid
+flowchart LR
+    A["SUEZ ANZ website<br/>location map API (JSON)"] -->|requests| B["01_Webscraping<br/>scrape_suez_services.py"]
+    B --> C[("suez_services_raw.csv")]
+    C --> D["02_ETL<br/>etl_transform.py<br/>clean · validate · enrich"]
+    D --> E[("03_Data<br/>suez_services_clean.csv")]
+    E --> F["04_Analysis<br/>analysis.py<br/>charts · summary · Folium map"]
+    E --> G["05_Dashboard<br/>Power BI report"]
+```
 
-### 05_DASHBOARD
+| Step | Script | What it does |
+|---|---|---|
+| **1. Scrape** | `01_Webscraping/scrape_suez_services.py` | Calls the JSON endpoint behind SUEZ's location map, extracts locations (`PoiItem`) and service types (`MapIcon`), joins them and stamps the extraction time |
+| **2. Transform** | `02_ETL/etl_transform.py` | Trims text, validates coordinates, removes duplicate sites, adds a **country** column, enforces data checks, writes the clean dataset |
+| **3. Analyse** | `04_Analysis/analysis.py` | Prints key figures, saves charts to `docs/images/`, a summary table and an interactive **Folium** map |
+| **4. Visualise** | `05_Dashboard/` | Power BI report with map, slicers, KPI cards and cross-filtering ([details](05_Dashboard/README.md)) |
 
-This directory contains the python notebook with an embedded Power BI report that visualizes the data. The Power BI dashboard contains slicers, cross-filtering and other advance capabilities that end user can play with to visualize a specific facet of the data or, to get additional insights.
+<details>
+<summary>Original architecture diagram</summary>
 
+![Architecture](https://github.com/Mayur96k/Suez_Services_Power_BI_Dashboard/assets/114133429/537877a5-ca76-4a9d-a69a-ace4ea0ca3c0)
 
-This directory contains images, icons, layouts, etc. that are used in this project
+</details>
 
-### Prerequisites
+## 📊 Data dictionary
 
-The major skills that are required as prerequisite to fully understand this project are as follows:
+`03_Data/suez_services_clean.csv`: one row per service location.
 
-    Basics of Python & Web Scraping
-    Basics of HTML
-    Basics of Python Notebooks
-    Basics of Power BI
+| Column | Type | Description |
+|---|---|---|
+| `service_name` | text | Site name, e.g. *Eastern Creek Organic Resource Recovery Facility* |
+| `service_type` | text | Waste, Water, Service Centre, Materials recycling, Transfer station, Office, Corporate |
+| `country` | text | Australia / New Zealand (derived from coordinates) |
+| `latitude`, `longitude` | decimal | WGS84 coordinates (6 decimals) |
+| `service_icon` | URL | Map icon used on the SUEZ website |
+| `last_updated_at_UTC` | datetime | When the data was extracted |
 
-In order to complete the project, I've used the following applications and libraries
+## 🚀 Getting started
 
-    Python
-    Python libraries mentioned in Notebook
-    Jupyter Notebook
-    Visual Studio Code
-    Microsoft Power BI
+```bash
+git clone https://github.com/Mayur96k/suez-services-powerbi-dashboard.git
+cd suez-services-powerbi-dashboard
+pip install -r requirements.txt
 
-    The choice of applications & their installation might vary based on individual preferences & system settings.
+python 01_Webscraping/scrape_suez_services.py   # optional: refresh the raw data from the website
+python 02_ETL/etl_transform.py                  # raw → clean dataset
+python 04_Analysis/analysis.py                  # charts, summary, interactive map
+```
 
+The repository already includes the 2023 snapshot, so steps 2 and 3 work without scraping. Open `04_Analysis/outputs/service_map.html` in a browser for the interactive map, and see [05_Dashboard/README.md](05_Dashboard/README.md) to rebuild the Power BI report.
 
-# Architecture
+## 📁 Project structure
 
-The project architecture is quite straight forward and can be explained through the below image:
+```
+suez-services-powerbi-dashboard/
+├── 01_Webscraping/
+│   ├── scrape_suez_services.py   # API scraper
+│   └── suez_services_raw.csv     # raw snapshot (19 Aug 2023)
+├── 02_ETL/
+│   └── etl_transform.py          # cleaning, validation, enrichment
+├── 03_Data/
+│   └── suez_services_clean.csv   # analysis-ready dataset
+├── 04_Analysis/
+│   ├── analysis.py               # EDA, charts, Folium map
+│   └── outputs/summary.csv       # sites by type and country
+├── 05_Dashboard/
+│   └── README.md                 # Power BI report: contents and rebuild steps
+├── docs/images/                  # charts used in this README
+└── requirements.txt
+```
 
-![PA](https://github.com/Mayur96k/Suez_Services_Power_BI_Dashboard/assets/114133429/537877a5-ca76-4a9d-a69a-ace4ea0ca3c0)
+## 🧰 Tech stack
 
+**Python** (requests, pandas, matplotlib, Folium) · **Power BI Desktop** · **VS Code / Jupyter**
 
+## ⚠️ Notes & limitations
 
+- Data comes from SUEZ's **public** website location map. It is a **point-in-time snapshot** (19 Aug 2023) and the site list may have changed since.
+- The website endpoint is undocumented and may change; the scraper fails clearly (HTTP error) if it does.
+- `country` is derived from coordinate ranges; a state/region column would need reverse geocoding (see roadmap).
+- This is a personal portfolio project and not an official SUEZ product.
 
+## 🗺️ Roadmap
 
+- [ ] Commit the `.pbix` report
+- [ ] Add state/region via reverse geocoding (e.g. NSW, VIC, QLD) for regional analysis
+- [ ] Schedule the scraper (GitHub Actions) to track how the network changes over time
+- [ ] Population and distance-to-site analysis to show service coverage
 
-As per the above workflow suggests; we are first scraping the data from the website using the Python script and collecting the same in a flat file which is then processed and cleaned with another ETL specific Python script.
+## 👤 Author
 
-Finally; we leverage the clean & analysis-ready dataset for some exploratory data analysis (EDA) using Jupyter Notebook and creating an insightful report using Power BI
+**Mayur Jagtap**: Data & BI Engineer
+[GitHub](https://github.com/Mayur96k) · mayurjagtap96k@gmail.com
 
+Found a bug or have an idea? Please [open an issue](https://github.com/Mayur96k/suez-services-powerbi-dashboard/issues).
 
-## Power BI Dashboard
+## 📄 License
 
-
-
-
-![Screenshot from 2023-08-19 19-24-11](https://github.com/Mayur96k/Suez_Services_Power_BI_Dashboard/assets/114133429/6293f2f4-9cb0-4369-8f94-36445cc54d16)
-
-
-
-
-
-
-
-## Author
-
-- Mayur Jagtap (mayurjagtap96k@gmail.com)
-
-## Bug Reporting
-
-For bug reports or any issues encountered while using repository code, please contact me at mayurjagtap96k@gmail.com. Please include detailed information about the problem and steps to reproduce it.
-
-## License
-
-"Copyright: 2023 Mayur Jagtap. All rights reserved."
-
-
-
-
+© 2023 Mayur Jagtap. All rights reserved.

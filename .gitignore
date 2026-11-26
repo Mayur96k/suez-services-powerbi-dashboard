@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Generated outputs
+04_Analysis/outputs/*.html
+
+# Power BI
+*.pbix.bak
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
